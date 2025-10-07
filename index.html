@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PigPackPaw - Coming Soon!</title>
+    <title>PigPackPaw - Tic-Tac-Toe Adventure</title>
     <style>
         * {
             margin: 0;
@@ -13,30 +13,55 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #2c3e50;
-            height: 100vh;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .container {
-            text-align: center;
-            max-width: 600px;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.9);
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(233, 30, 99, 0.3);
+            padding: 60px 40px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
-            border: 3px solid rgba(233, 30, 99, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
         .pig-icon {
-            font-size: 8rem;
+            font-size: 7rem;
             margin-bottom: 20px;
             animation: bounce 2s ease-in-out infinite;
+            display: inline-block;
         }
 
         @keyframes bounce {
@@ -52,14 +77,15 @@
         }
 
         h1 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #e91e63, #ff5722, #ff9800, #f06292);
-            background-size: 300% 300%;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 3s ease-in-out infinite;
+            animation: gradientShift 4s ease-in-out infinite;
+            font-weight: 700;
         }
 
         @keyframes gradientShift {
@@ -68,59 +94,241 @@
             100% { background-position: 0% 50%; }
         }
 
-        .construction-message {
-            font-size: 1.5rem;
-            color: #e91e63;
-            margin-bottom: 30px;
+        .subtitle {
+            font-size: 1.4rem;
+            color: #667eea;
             font-weight: 600;
         }
 
-        .construction-icon {
-            font-size: 3rem;
+        .halloween-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b00, #ff9500);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
             margin: 20px 0;
-            animation: rotate 3s linear infinite;
+            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 5px 20px rgba(255, 107, 0, 0.4);
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        .coming-soon {
-            font-size: 1.2rem;
+        .description {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .description h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .description p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 15px;
+        }
+
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features li {
+            padding: 12px 0;
+            font-size: 1.1rem;
+            color: #555;
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .scoring {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .scoring h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .score-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 1.05rem;
+        }
+
+        .score-item:last-child {
+            border-bottom: none;
+        }
+
+        .score-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin: 40px 0 20px;
+        }
+
+        .play-button {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .play-button:hover::before {
+            left: 100%;
+        }
+
+        .play-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
             color: #666;
-            margin-top: 20px;
-            opacity: 0.8;
+            font-size: 1rem;
         }
 
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
             .container {
-                margin: 20px;
-                padding: 30px 20px;
+                padding: 40px 25px;
             }
             
             .pig-icon {
-                font-size: 6rem;
+                font-size: 5rem;
             }
             
             h1 {
                 font-size: 2.5rem;
             }
             
-            .construction-message {
+            .subtitle {
                 font-size: 1.2rem;
+            }
+
+            .description h2 {
+                font-size: 1.5rem;
+            }
+
+            .description p,
+            .features li {
+                font-size: 1rem;
+            }
+
+            .play-button {
+                padding: 15px 35px;
+                font-size: 1.1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="pig-icon">🐷</div>
-        <h1>PigPackPaw</h1>
-        <div class="construction-message">Under Construction</div>
-        <div class="construction-icon">🔧</div>
-        <div class="coming-soon">Our piggy adventure is being built! Check back soon!</div>
+    <div class="hero">
+        <div class="container">
+            <div class="header">
+                <div class="pig-icon">🐷</div>
+                <h1>PigPackPaw</h1>
+                <p class="subtitle">Tic-Tac-Toe Adventure</p>
+                <div class="halloween-badge">🎃 Halloween Version Available! 🎃</div>
+            </div>
+
+            <div class="description">
+                <h2>About the Game</h2>
+                <p>Challenge the AI in this unique twist on the classic Tic-Tac-Toe! Play across multiple game tables simultaneously, where your moves mirror across all boards at once.</p>
+                
+                <ul class="features">
+                    <li>Play against an adaptive AI that gets tougher when you win and easier when you lose</li>
+                    <li>Score points for consecutive cells on rows, columns, or diagonals</li>
+                    <li>Multiple game modes with different table sizes and configurations</li>
+                    <li>Track your statistics across all game types</li>
+                    <li>Special Halloween-themed version available</li>
+                </ul>
+
+                <div class="scoring">
+                    <h3>Scoring System</h3>
+                    <div class="score-item">
+                        <span>3 consecutive cells</span>
+                        <span class="score-value">1 point</span>
+                    </div>
+                    <div class="score-item">
+                        <span>4 consecutive cells</span>
+                        <span class="score-value">5 points</span>
+                    </div>
+                    <div class="score-item">
+                        <span>5 consecutive cells</span>
+                        <span class="score-value">25 points</span>
+                    </div>
+                    <div class="score-item">
+                        <span>6 consecutive cells</span>
+                        <span class="score-value">125 points</span>
+                    </div>
+                </div>
+
+                <p><strong>Pro Tip:</strong> When you move on one table, the move is automatically made on the cell with the same ID across all tables. Plan your strategy carefully!</p>
+            </div>
+
+            <div class="cta-section">
+                <a href="https://play.google.com/store/apps/details?id=com.radugramescu.pigpackpaw&pcampaignid=web_share" class="play-button" target="_blank">
+                    Download on Google Play
+                </a>
+            </div>
+
+            <div class="footer">
+                <p>Created by Radu Gramescu</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
